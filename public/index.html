@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Javascript Battle</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+
+
+
+
+
+<div id="gamewindow"></div>
+
+
+
+<script src="setup.js"></script>
+
+
+<script src="main.js"></script>
+
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+
+
+
+
+
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+
+<script>
+
+    // Handle keyboard controls
+    var keysDown = {};
+
+    addEventListener("keydown", function (e) {
+        keysDown[e.keyCode] = true;
+    }, false);
+
+    addEventListener("keyup", function (e) {
+        delete keysDown[e.keyCode];
+    }, false);
+
+    addEventListener("keyup", function (e) {
+        delete keysDown[e.keyCode];
+    }, false);
+
+
+
+
+    //Event for left click
+    ctx.canvas.addEventListener('click', function(event){
+        var mouseX = event.clientX - ctx.canvas.offsetLeft;
+        var mouseY = event.clientY - ctx.canvas.offsetTop;
+
+        //attack(mouseX, mouseY);
+
+        socket.emit('attack', mouseX, mouseY);
+
+        //ctx.fillStyle = "orange";
+        //ctx.fillRect(mouseX-15, mouseY-15, 30, 30);
+    });
+
+    // Update game objects
+    var keyActions = function () {
+
+
+        // player holding up
+        if (87 in keysDown ) {
+            socket.emit('move', 'up');
+
+            console.log("up");
+        }
+
+        // player holding down
+        if(83 in keysDown ) {
+            socket.emit('move', 'down');
+        }
+
+        // player holding left
+        if (65 in keysDown) {
+            socket.emit('move', 'left');
+        }
+
+        // player holding right
+        if (68 in keysDown) {
+            socket.emit('move', 'right');
+        }
+    };
+
+    //var socket = io.connect("http://localhost:3000");
+
+    var socket = io();
+
+    // io.emit('background', 'images/Bgimage.jpg');
+
+    socket.on('gameInfo', function(map){
+        backgroundImage.src = map.map;
+        player.health = map.playerHP;
+        player.x = map.playerX;
+        player.y = map.playerY;
+        LVL = map.LVL;
+    });
+
+
+
+    socket.on('render', function(when){
+        if(when === 'now') {
+            keyActions();
+            render();
+        }
+    });
+
+
+    //io.emit('render', 'now');
+
+    //io.emit('enemies', gameInfo.enemies());
+    /*
+    socket.on('enemies', function(enemies){
+        enemie = enemies;
+    });
+    */
+
+    socket.on('playerPos', function(pos){
+        player = pos;
+        //render();
+        //console.log(pos);
+        //enemie = enemies;
+    });
+
+    socket.on('arrows', function(arrow){
+        arrows = arrow;
+        //console.log(pos);
+        //enemie = enemies;
+    });
+
+
+    socket.on('enemiesPos', function(enemies){
+        enemie = enemies;
+
+    });
+
+    //io.emit('arrows', gameInfo.attack(mouseX, mouseY));
+
+    //io.emit('playerPos', gameInfo.player.x);
+
+
+
+
+
+
+    //console.log(player.health);
+
+    //socket.emit('playerH', player.health);
+
+
+
+
+
+
+    //Send "test" on socket "variable"
+
+
+
+    /*
+     socket.on('chat message', function(msg){
+     $('#messages').append($('<li>').text(msg));
+     });
+     */
+
+
+    //If something comes on socket "variable" print the "information
+    //socket.on('here', function(information){
+
+        //console.log(information);
+        //$('#messages').append($('<li>').text(msg));
+    //});
+
+
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

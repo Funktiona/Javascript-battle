@@ -1,0 +1,17 @@
+
+
+
+body {
+
+    margin: 0px;
+    padding: 0px;
+    background-color: black;
+}
+
+#gamewindow {
+
+    height: 700px;
+    width: 800px;
+    margin: auto;
+
+}
