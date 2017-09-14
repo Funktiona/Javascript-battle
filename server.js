@@ -14,6 +14,9 @@ var
       ".jpg" : "image/jpeg"
     };
 
+
+// comment
+
 //helper function handles file verification
 function getFile(filePath,res,page404,mimeType){
   //does the requested file exist?
@@ -118,6 +121,3 @@ function loop()
 }
 
 loop();
-
-
-
